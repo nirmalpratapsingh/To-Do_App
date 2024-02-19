@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="To-Do.css">
+    <title>Todo App</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="todo-app">
+            <h2>To-Do List <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/023/142/130/small_2x/carefully-designed-checklist-icon-represents-a-list-of-tasks-or-items-to-be-completed-often-used-in-productivity-and-organization-apps-vector.jpg">
+            </h2>
+            <div class="row">
+                <input type="text" id="input-box" placeholder="Add your text">
+                <button onclick="addTask()">Add</button>
+            </div>
+            <ul id="list-container">
+                <!-- <li class="checked">Task1</li>
+                <li>Task2</li>
+                <li>Task3</li> -->
+            </ul>
+        </div>
+    </div>
+    <script>
+        const inputBox = document.getElementById("input-box");
+        const listContainer = document.getElementById("list-container");
+
+        function addTask() {
+            if (inputBox.value === '') {
+                alert("Please enter a task!");
+            } else {
+                let li = document.createElement("li");
+                li.innerHTML = inputBox.value;
+                listContainer.appendChild(li);
+                let span = document.createElement("span");
+                span.innerHTML = "\u00d7";
+                span.className = "close";
+                li.appendChild(span);
+            }
+            inputBox.value = "";
+            saveData();
+        }
+
+        listContainer.addEventListener("click", function (e) {
+            if (e.target.tagName === "LI") {
+                e.target.classList.toggle("checked");
+                saveData();
+            } else if (e.target.tagName === "SPAN" && e.target.className === "close") {
+                e.target.parentElement.remove();
+                saveData();
+            }
+        }, false);
+
+        function saveData() {
+            localStorage.setItem("data", listContainer.innerHTML);
+        }
+
+        function showTask() {
+            listContainer.innerHTML = localStorage.getItem("data");
+        }
+        showTask();
+
+    </script>
+</body>
+
+</html>
